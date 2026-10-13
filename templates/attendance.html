@@ -1,0 +1,13 @@
+{% extends "base.html" %}{% block title %}Attendance{% endblock %}{% block body %}
+<h1>Attendance</h1><p class="sub">Record attendance and study trends by branch and age group.</p>
+<div class="card"><h2>Record attendance</h2><form method="post"><div class="form-grid">
+<div><label for="branch_id">Branch</label><select id="branch_id" name="branch_id">{% for b in branches %}<option value="{{ b.id }}">{{ b.name }}</option>{% endfor %}</select></div>
+<div><label for="service_date">Date</label><input id="service_date" type="date" name="service_date" value="{{ today }}"></div>
+<div><label for="service_type">Service type</label><select id="service_type" name="service_type">{% for t in types %}<option>{{ t }}</option>{% endfor %}</select></div>
+<div><label for="attendance">Number present</label><input id="attendance" name="attendance" type="number" min="0" required></div>
+<div style="grid-column:span 3"><label for="notes">Notes (optional)</label><input id="notes" name="notes"></div><div><button class="btn">Save attendance</button></div></div></form></div>
+<div class="card"><h2>Sunday attendance trend (last 52 weeks)</h2>
+<form method="get" style="max-width:320px;margin-bottom:10px"><label for="branch">Choose branch</label><select id="branch" name="branch" onchange="this.form.submit()">{% for b in branches %}<option value="{{ b.id }}" {{ 'selected' if b.id==bid }}>{{ b.name }}</option>{% endfor %}</select></form>{{ chart }}</div>
+<div class="grid g2"><div class="card"><h2>Members by age group (this branch)</h2><table><tr><th>Age group</th><th class="num">Members</th></tr>{% for a in ages %}<tr><td>{{ a.age_group }}</td><td class="num">{{ a.c }}</td></tr>{% endfor %}</table></div>
+<div class="card"><h2>Latest records</h2><table><tr><th>Date</th><th>Branch</th><th>Service</th><th class="num">Present</th></tr>{% for r in recent %}<tr><td>{{ r.service_date }}</td><td>{{ r.branch }}</td><td>{{ r.service_type }}</td><td class="num">{{ r.attendance }}</td></tr>{% endfor %}</table></div></div>
+{% endblock %}

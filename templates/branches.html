@@ -1,0 +1,7 @@
+{% extends "base.html" %}{% block title %}Branch Comparison{% endblock %}{% block body %}
+<h1>Multi-Branch Comparison</h1><p class="sub">Growth, membership, finances and outreach across all four sites.</p>
+<div class="card"><table><tr><th>Branch</th><th class="num">Active members</th><th class="num">Avg Sunday attendance (8 wks)</th><th class="num">Change vs last year</th><th class="num">Income Sep 2026 (SLE)</th><th class="num">Outreach activities</th><th class="num">Beneficiaries</th></tr>
+{% for t in table %}<tr><td><b>{{ t.name }}</b></td><td class="num">{{ t.members }}</td><td class="num">{{ t.att }}</td>
+<td class="num"><span class="badge {{ 'good' if t.growth>=0 else 'bad' }}">{{ '%+.1f'|format(t.growth) }}%</span></td><td class="num">{{ "{:,.0f}".format(t.income) }}</td><td class="num">{{ t.outreach }}</td><td class="num">{{ "{:,}".format(t.beneficiaries) }}</td></tr>{% endfor %}</table></div>
+<div class="grid g2"><div class="card"><h2>Attendance by branch</h2>{{ c1 }}</div><div class="card"><h2>Income by branch</h2>{{ c2 }}</div></div>
+{% endblock %}

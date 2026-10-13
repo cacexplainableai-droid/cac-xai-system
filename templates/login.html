@@ -1,0 +1,11 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Login - CAC Explainable AI</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"></head><body>
+<div class="login-wrap"><form class="login-card" method="post">
+<h1>Christ Apostolic Church Sierra Leone</h1>
+<p class="sub">Explainable AI Framework for Member Engagement and Organisational Performance<br>Mission Headquarters, Kenema, Kissy Road and Dwazark</p>
+{% with msgs = get_flashed_messages(with_categories=true) %}{% for c,m in msgs %}<div class="flash {{ c }}">{{ m }}</div>{% endfor %}{% endwith %}
+<div class="field"><label for="username">Username</label><input id="username" name="username" autocomplete="username" autofocus required></div>
+<div class="field"><label for="password">Password</label><input id="password" name="password" type="password" autocomplete="current-password" required></div>
+<button class="btn" style="width:100%">Log in</button>
+<p class="sub" style="margin-top:16px;font-size:12px">Authorised church users only. All activity is recorded for audit.</p>
+</form></div></body></html>

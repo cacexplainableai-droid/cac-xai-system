@@ -1,0 +1,16 @@
+{% extends "base.html" %}{% block title %}Unusual Transactions{% endblock %}{% block body %}
+<h1>Unusual Transaction Review</h1><p class="sub">The system marks records that look different from the normal pattern. A person must review every flag.</p>
+<div class="note"><b>Important:</b> a flag is NOT an accusation. It only means the record looks different from similar records. Many flags have innocent reasons.</div>
+<form method="post" style="margin-bottom:16px"><button class="btn gold">Run anomaly detection now</button></form>
+{% if ev %}<div class="card"><h2>Test of the detector on the sample data</h2><p>{{ ev.flagged }} records flagged. The sample data contains {{ ev.planted }} deliberately planted unusual records; the detector found {{ ev.caught }} of them (precision {{ '%.0f'|format(ev.precision*100) }}%, recall {{ '%.0f'|format(ev.recall*100) }}%).</p></div>{% endif %}
+{% if detail %}<div class="card"><h2>Explanation for record #{{ detail.row.id }} - {{ detail.row.branch }}, {{ detail.row.category }}, SLE {{ "{:,.0f}".format(detail.row.amount) }} on {{ detail.row.tx_date }}</h2>
+<p><b>Why it was flagged:</b></p><ul class="why">{% for r in detail.reasons %}<li>{{ r[0]|upper }}{{ r[1:] }}.</li>{% endfor %}</ul>
+{{ detail.chart }}
+<form method="post" action="{{ url_for('review', tx=detail.row.id) }}" style="display:flex;gap:10px;align-items:end;max-width:560px;margin-top:10px">
+<div style="flex:1"><label for="status">Human reviewer decision (current: {{ detail.row.review_status }})</label><select id="status" name="status"><option>Reviewed - genuine</option><option>Needs follow-up</option><option>Not reviewed</option></select></div><button class="btn">Save decision</button></form>
+<p class="sub" style="margin-top:10px">{{ detail.disclaimer }}</p></div>{% endif %}
+<div class="card"><h2>Flagged records ({{ rows|length }})</h2><table><tr><th>Date</th><th>Branch</th><th>Category</th><th class="num">Amount (SLE)</th><th class="num">Unusual score</th><th>Review status</th><th></th></tr>
+{% for r in rows %}<tr><td>{{ r.tx_date }}</td><td>{{ r.branch }}</td><td>{{ r.category }}</td><td class="num">{{ "{:,.0f}".format(r.amount) }}</td><td class="num">{{ '%.3f'|format(r.anomaly_score) }}</td>
+<td><span class="badge {{ 'good' if r.review_status.startswith('Reviewed') else ('warn' if r.review_status=='Needs follow-up' else '') }}">{{ r.review_status }}</span></td>
+<td><a class="btn small" href="{{ url_for('anomalies', tx=r.id) }}">Explain</a></td></tr>{% else %}<tr><td colspan="7">No flagged records yet. Click "Run anomaly detection now".</td></tr>{% endfor %}</table></div>
+{% endblock %}

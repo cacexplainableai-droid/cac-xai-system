@@ -1,0 +1,11 @@
+{% extends "base.html" %}{% block title %}{{ cfg.title }}{% endblock %}{% block body %}
+<h1>{{ cfg.title }}</h1><p class="sub">Add new records and view the latest entries.</p>
+<div class="card"><h2>Add a new record</h2><form method="post"><div class="form-grid">
+{% for name,label,opts,kind in fields %}<div><label for="{{ name }}">{{ label }}</label>
+{% if opts %}<select id="{{ name }}" name="{{ name }}">{% for v,t in opts %}<option value="{{ v }}">{{ t }}</option>{% endfor %}</select>
+{% else %}<input id="{{ name }}" name="{{ name }}" type="{{ 'date' if kind=='date' else ('number' if kind=='number' else 'text') }}" {% if kind=='number' %}min="0" step="any"{% endif %} {% if kind=='date' %}value="{{ today }}"{% endif %}>{% endif %}</div>{% endfor %}
+<div><button class="btn">Save record</button></div></div></form></div>
+<div class="card"><h2>Records ({{ rows|length }} shown)</h2><div style="overflow-x:auto"><table>
+<tr>{% for k in rows[0].keys() if k!='id' %}<th>{{ k }}</th>{% endfor %}{% if cfg.link %}<th></th>{% endif %}</tr>
+{% for r in rows %}<tr>{% for k in r.keys() if k!='id' %}<td>{{ r[k] }}</td>{% endfor %}{% if cfg.link %}<td><a class="btn small" href="{{ cfg.link[1].format(id=r['id']) }}">{{ cfg.link[0] }}</a></td>{% endif %}</tr>{% endfor %}
+</table></div></div>{% endblock %}

@@ -1,0 +1,17 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}CAC Explainable AI{% endblock %} - CAC Sierra Leone</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"></head><body>
+<div class="shell"><nav class="side">
+<div class="brand"><b>Christ Apostolic Church<br>Sierra Leone</b><span>Explainable AI Framework</span></div>
+{% macro nav(ep, label, page, entity=None) %}{% if allowed(page) %}<a href="{{ url_for(ep, entity=entity) if entity else url_for(ep) }}" class="{{ 'on' if nav_active==ep and (entity is none or entity==(request.view_args or {}).get('entity')) }}">{{ label }}</a>{% endif %}{% endmacro %}
+{{ nav('dashboard','Dashboard','dashboard') }}{{ nav('branches','Branch Comparison','branches') }}
+{{ nav('manage','Members','members','members') }}{{ nav('manage','Ministries','ministries','ministries') }}
+{{ nav('attendance','Attendance','attendance') }}{{ nav('predict','Attendance Prediction','predict') }}
+{{ nav('manage','Events','events','events') }}{{ nav('finance','Finance & Forecast','finance') }}
+{{ nav('anomalies','Unusual Transactions','anomalies') }}{{ nav('manage','Community Outreach','outreach','outreach') }}
+{{ nav('manage','Resources','resources','resources') }}{{ nav('assistant','Knowledge Assistant','assistant') }}
+{{ nav('governance','Model Governance','governance') }}{{ nav('reports','Reports','reports') }}
+{% if user %}<div class="who">Signed in as<br><b style="color:#fff">{{ user.full_name }}</b><br>Role: {{ user.role }}<br><a href="{{ url_for('logout') }}" style="padding:6px 0;color:#f0d38a">Log out</a></div>{% endif %}
+</nav><main class="main">
+{% with msgs = get_flashed_messages(with_categories=true) %}{% for c,m in msgs %}<div class="flash {{ c }}">{{ m }}</div>{% endfor %}{% endwith %}
+{% block body %}{% endblock %}</main></div></body></html>

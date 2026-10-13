@@ -1,0 +1,20 @@
+{% extends "base.html" %}{% from "_explain.html" import explain %}{% block title %}Attendance Prediction{% endblock %}{% block body %}
+<h1>Attendance Prediction</h1><p class="sub">Choose a branch, date and type of service. The system predicts attendance and explains its reasons.</p>
+<div class="card"><form method="post"><div class="form-grid">
+<div><label for="branch_id">Branch</label><select id="branch_id" name="branch_id">{% for b in branches %}<option value="{{ b.id }}" {{ 'selected' if form.branch_id==b.id|string }}>{{ b.name }}</option>{% endfor %}</select></div>
+<div><label for="service_date">Date of service</label><input id="service_date" type="date" name="service_date" value="{{ form.service_date }}"></div>
+<div><label for="service_type">Service type</label><select id="service_type" name="service_type">{% for t in types %}<option {{ 'selected' if form.service_type==t }}>{{ t }}</option>{% endfor %}</select></div>
+<div><button class="btn gold">Predict attendance</button></div></div></form></div>
+{% if res %}<div class="grid g2"><div class="card"><h2>{{ res.branch }} - {{ form.service_type }}, {{ form.service_date }}</h2>
+<div class="big">{{ res.prediction }} <span style="font-size:18px;color:#667085">people expected</span></div>
+<p class="sub">Likely range: {{ res.low }} to {{ res.high }} people (based on the model's average error of {{ '%.1f'|format(res.mae) }} people for this type of service on test data).</p></div>
+<div class="card"><h2>Suggested preparation</h2><table>
+<tr><td>Seats to arrange</td><td class="num"><b>{{ res.plan.seats }}</b></td></tr><tr><td>Volunteers needed</td><td class="num"><b>{{ res.plan.volunteers }}</b></td></tr>
+<tr><td>Food portions</td><td class="num"><b>{{ res.plan.food }}</b></td></tr><tr><td>Parking spaces</td><td class="num"><b>{{ res.plan.parking }}</b></td></tr></table></div></div>
+{{ explain(res) }}
+<div class="note">This is a prediction to help planning. The final decision belongs to the church leadership.</div>
+{% else %}<div class="card"><h2>Model quality (tested on 2026 data it had not seen)</h2>
+<table><tr><th>Measure</th><th class="num">Random Forest</th><th class="num">Baseline: same as last time</th></tr>
+<tr><td>Mean absolute error (people)</td><td class="num">{{ '%.1f'|format(am.metrics.mae) }}</td><td class="num">{{ '%.1f'|format(am.baseline_mae) }}</td></tr>
+<tr><td>R-squared</td><td class="num">{{ '%.3f'|format(am.metrics.r2) }}</td><td class="num">-</td></tr></table></div>{% endif %}
+{% endblock %}

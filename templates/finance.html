@@ -1,0 +1,16 @@
+{% extends "base.html" %}{% block title %}Finance and Forecast{% endblock %}{% block body %}
+<h1>Finance and Income Forecast</h1><p class="sub">Record income, view trends and see an explained forecast for the next three months. Amounts are in Sierra Leonean Leones (SLE).</p>
+<div class="card"><h2>Record income</h2><form method="post"><div class="form-grid">
+<div><label for="branch_id">Branch</label><select id="branch_id" name="branch_id">{% for b in branches %}<option value="{{ b.id }}">{{ b.name }}</option>{% endfor %}</select></div>
+<div><label for="tx_date">Date</label><input id="tx_date" type="date" name="tx_date" value="{{ today }}"></div>
+<div><label for="category">Category</label><select id="category" name="category">{% for c in cat_list %}<option>{{ c }}</option>{% endfor %}</select></div>
+<div><label for="amount">Amount (SLE)</label><input id="amount" name="amount" type="number" min="1" step="any" required></div>
+<div style="grid-column:span 3"><label for="note">Note (optional)</label><input id="note" name="note"></div><div><button class="btn">Save income</button></div></div></form></div>
+<div class="card"><h2>Monthly income and 3-month forecast</h2>
+<form method="get" style="max-width:320px;margin-bottom:10px"><label for="branch">Choose branch</label><select id="branch" name="branch" onchange="this.form.submit()">{% for b in branches %}<option value="{{ b.id }}" {{ 'selected' if b.id==bid }}>{{ b.name }}</option>{% endfor %}</select></form>{{ chart }}
+<table style="margin-top:10px"><tr><th>Forecast month</th><th class="num">Expected income (SLE)</th></tr>{% for f in fc %}<tr><td>{{ f.label }}</td><td class="num"><b>{{ "{:,.0f}".format(f.value) }}</b></td></tr>{% endfor %}</table>
+<p class="sub" style="margin-top:8px">Typical forecast error on test months: SLE {{ "{:,.0f}".format(m.metrics.mae) }} (baseline "same as last month": SLE {{ "{:,.0f}".format(m.baseline_mae) }}).</p></div>
+<div class="card"><h2>Why this forecast? (first forecast month)</h2>{{ contrib }}<ul class="why">{% for c in expl[:3] %}<li>{{ c.text }}</li>{% endfor %}</ul></div>
+<div class="grid g2"><div class="card"><h2>Income by category, 2026</h2><table><tr><th>Category</th><th class="num">SLE</th></tr>{% for c in cats %}<tr><td>{{ c.category }}</td><td class="num">{{ "{:,.0f}".format(c.s) }}</td></tr>{% endfor %}</table></div>
+<div class="card"><h2>Latest entries</h2><table><tr><th>Date</th><th>Branch</th><th>Category</th><th class="num">SLE</th></tr>{% for r in recent %}<tr><td>{{ r.tx_date }}</td><td>{{ r.branch }}</td><td>{{ r.category }}</td><td class="num">{{ "{:,.0f}".format(r.amount) }}</td></tr>{% endfor %}</table></div></div>
+{% endblock %}

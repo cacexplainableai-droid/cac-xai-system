@@ -1,0 +1,5 @@
+{% macro explain(res) %}
+<div class="card"><h2>Why did the system predict this? (Explainable AI)</h2>
+<p class="sub" style="margin-bottom:6px">The average prediction across all services is about <b>{{ '{:,.0f}'.format(res.base) }}</b>. Each bar shows how much one factor moved the prediction away from that average.</p>
+{{ res.chart }}
+<ul class="why">{% for c in res.contributions[:4] %}<li>{{ c.text }}</li>{% endfor %}</ul></div>{% endmacro %}

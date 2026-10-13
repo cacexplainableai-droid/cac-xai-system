@@ -1,0 +1,14 @@
+{% extends "base.html" %}{% block title %}Dashboard{% endblock %}{% block body %}
+<h1>Dashboard</h1><p class="sub">Overview of the Mission Headquarters and its three branches.</p>
+<div class="grid g5" style="margin-bottom:18px">
+<div class="kpi"><b>{{ stats.members }}</b><span>Active members (sample)</span></div>
+<div class="kpi"><b>{{ "{:,}".format(stats.avg_att) }}</b><span>Combined Sunday attendance (recent average)</span></div>
+<div class="kpi"><b>SLE {{ "{:,.0f}".format(stats.income) }}</b><span>Income recorded, September 2026</span></div>
+<div class="kpi"><b>{{ stats.flagged }}</b><span>Flagged records awaiting human review</span></div>
+<div class="kpi"><b>{{ stats.upcoming }}</b><span>Planned events</span></div></div>
+<div class="card"><h2>Total Sunday attendance, all branches (last 26 weeks)</h2>{{ chart }}</div>
+<div class="card"><h2>Upcoming planned events</h2><table><tr><th>Event</th><th>Branch</th><th>Date</th><th>Type</th><th></th></tr>
+{% for e in events %}<tr><td>{{ e.title }}</td><td>{{ e.branch }}</td><td>{{ e.event_date }}</td><td>{{ e.event_type }}</td>
+<td>{% if allowed('events') %}<a class="btn small" href="{{ url_for('event_plan', eid=e.id) }}">Plan</a>{% endif %}</td></tr>{% endfor %}</table></div>
+<div class="note">Predictions and flags on this system support people; they never make decisions about members, money or policy.</div>
+{% endblock %}

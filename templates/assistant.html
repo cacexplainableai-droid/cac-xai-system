@@ -1,0 +1,12 @@
+{% extends "base.html" %}{% block title %}Knowledge Assistant{% endblock %}{% block body %}
+<h1>Knowledge Assistant</h1><p class="sub">Ask a question. The assistant answers ONLY from the church's approved documents and always shows the source.</p>
+<div class="card"><form method="post"><label for="question">Your question</label><div style="display:flex;gap:10px"><input id="question" name="question" value="{{ question }}" placeholder="Example: How soon must offerings be deposited in the bank?" required><button class="btn gold" style="white-space:nowrap">Search documents</button></div></form></div>
+{% if results is not none %}<div class="card"><h2>Answer from approved documents</h2>
+{% for r in results %}<div style="border-left:4px solid var(--gold);padding:4px 14px;margin-bottom:14px"><p style="margin:0 0 4px">{{ r.passage }}</p>
+<span class="badge">Source: {{ r.title }}</span> <span class="badge">{{ r.category }}</span> <span class="badge good">Match {{ '%.0f'|format(r.score*100) }}%</span></div>
+{% else %}<p>No answer was found in the approved documents. Please ask your pastor or leader. The assistant does not guess.</p>{% endfor %}</div>{% endif %}
+<div class="card"><h2>Approved documents in the library ({{ docs|length }})</h2><table><tr><th>Title</th><th>Category</th><th>Added</th></tr>{% for d in docs %}<tr><td>{{ d.title }}</td><td>{{ d.category }}</td><td>{{ d.added_on }}</td></tr>{% endfor %}</table></div>
+{% if user.role=='admin' %}<div class="card"><h2>Add an approved document (administrators only)</h2><form method="post"><input type="hidden" name="form" value="add"><div class="form-grid">
+<div><label for="title">Title</label><input id="title" name="title" required></div><div><label for="category">Category</label><select id="category" name="category"><option>Policy</option><option>Announcement</option><option>Sermon</option><option>Bible Class</option><option>Event Proceedings</option></select></div>
+<div style="grid-column:span 2"><label for="content">Text (separate paragraphs with a blank line)</label><textarea id="content" name="content" rows="3" required></textarea></div></div><br><button class="btn">Add document</button></form></div>{% endif %}
+{% endblock %}

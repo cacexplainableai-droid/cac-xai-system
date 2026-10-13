@@ -1,0 +1,46 @@
+:root{--navy:#1b2750;--navy2:#26356b;--gold:#b8892b;--bg:#f3f5fa;--card:#fff;--ink:#1d2433;--mute:#667085;--line:#dde2ee;--red:#a23b3b;--green:#2e7d6b}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.5}
+.shell{display:flex;min-height:100vh}
+.side{width:236px;background:var(--navy);color:#dfe5f7;padding:18px 0;flex-shrink:0}
+.brand{padding:0 20px 16px;border-bottom:1px solid #34437a;margin-bottom:10px}
+.brand b{display:block;color:#fff;font-size:16px;line-height:1.25}
+.brand span{font-size:12px;color:#aab6dc}
+.side a{display:block;padding:8px 20px;color:#dfe5f7;text-decoration:none;font-size:14px;border-left:3px solid transparent}
+.side a:hover{background:var(--navy2)}
+.side a.on{background:var(--navy2);border-left-color:var(--gold);color:#fff;font-weight:600}
+.side .who{padding:14px 20px 0;margin-top:12px;border-top:1px solid #34437a;font-size:12px;color:#aab6dc}
+.main{flex:1;padding:24px 30px;min-width:0}
+h1{font-size:23px;margin:0 0 4px;color:var(--navy)}
+h2{font-size:17px;margin:0 0 10px;color:var(--navy)}
+.sub{color:var(--mute);margin:0 0 18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:18px 20px;margin-bottom:18px}
+.grid{display:grid;gap:16px}.g5{grid-template-columns:repeat(5,1fr)}.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+.kpi{background:var(--card);border:1px solid var(--line);border-top:3px solid var(--gold);border-radius:6px;padding:14px 16px}
+.kpi b{display:block;font-size:24px;color:var(--navy)}.kpi span{color:var(--mute);font-size:13px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{background:#eaeef8;text-align:left;padding:8px 10px;color:var(--navy);border-bottom:2px solid var(--line)}
+td{padding:7px 10px;border-bottom:1px solid var(--line)}
+tr:hover td{background:#fafbfe}
+.num{text-align:right}
+label{display:block;font-size:13px;font-weight:600;margin-bottom:3px;color:var(--navy)}
+input,select,textarea{width:100%;padding:8px 10px;border:1px solid #c5ccdf;border-radius:4px;font:inherit;background:#fff}
+input:focus,select:focus,textarea:focus,button:focus-visible,a:focus-visible{outline:2px solid var(--gold);outline-offset:1px}
+.btn{background:var(--navy);color:#fff;border:0;border-radius:4px;padding:9px 18px;font:inherit;font-weight:600;cursor:pointer;text-decoration:none;display:inline-block}
+.btn:hover{background:var(--navy2)}.btn.gold{background:var(--gold)}.btn.small{padding:4px 10px;font-size:13px}
+.form-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;align-items:end}
+.flash{padding:10px 14px;border-radius:4px;margin-bottom:14px;border:1px solid}
+.flash.ok{background:#e8f5ef;border-color:#a9d8c4;color:#1d5c46}.flash.error{background:#fbeaea;border-color:#e3b0b0;color:#7d2b2b}
+.chart{width:100%;height:auto}.chart .grid{stroke:#e3e7f1;stroke-width:1}.chart .axis{font-size:11px;fill:#566}.chart .zero{stroke:#889;stroke-width:1.2}
+.chart .forecast-zone{fill:#b8892b;opacity:.10}
+.badge{display:inline-block;padding:2px 9px;border-radius:10px;font-size:12px;font-weight:600;background:#eaeef8;color:var(--navy)}
+.badge.warn{background:#fbeede;color:#8a5a00}.badge.bad{background:#fbeaea;color:var(--red)}.badge.good{background:#e8f5ef;color:var(--green)}
+.big{font-size:44px;font-weight:700;color:var(--navy);line-height:1}
+.note{background:#fff8e6;border-left:4px solid var(--gold);padding:10px 14px;font-size:13.5px;margin:12px 0}
+ul.why{padding-left:18px;margin:6px 0}ul.why li{margin-bottom:5px}
+.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#1b2750 0%,#26356b 60%,#3b4d94 100%)}
+.login-card{background:#fff;border-radius:8px;padding:34px 36px;width:420px;border-top:5px solid var(--gold)}
+.login-card h1{font-size:21px}.login-card .sub{font-size:13px}
+.login-card .field{margin-bottom:14px}
+@media(max-width:900px){.shell{flex-direction:column}.side{width:100%}.g5,.g4,.g3,.g2,.form-grid{grid-template-columns:1fr 1fr}}
+@media print{.side,.btn{display:none}.main{padding:0}}

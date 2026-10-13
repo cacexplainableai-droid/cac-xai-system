@@ -1,0 +1,9 @@
+{% extends "base.html" %}{% from "_explain.html" import explain %}{% block title %}Event Plan{% endblock %}{% block body %}
+<h1>Event Plan: {{ ev.title }}</h1><p class="sub">{{ ev.branch }} - {{ ev.event_date }} - {{ ev.event_type }}</p>
+<div class="grid g2"><div class="card"><h2>Predicted attendance</h2><div class="big">{{ res.prediction }}</div><p class="sub">Likely range {{ res.low }} to {{ res.high }} people.</p></div>
+<div class="card"><h2>Recommended arrangements</h2><table>
+<tr><td>Seats</td><td class="num"><b>{{ res.plan.seats }}</b></td><td>predicted x {{ ratios.seat_buffer }}</td></tr>
+<tr><td>Volunteers</td><td class="num"><b>{{ res.plan.volunteers }}</b></td><td>1 for every {{ ratios.attendees_per_volunteer }} people</td></tr>
+<tr><td>Food portions</td><td class="num"><b>{{ res.plan.food }}</b></td><td>{{ (ratios.food_portion_rate*100)|int }}% of people</td></tr>
+<tr><td>Parking spaces</td><td class="num"><b>{{ res.plan.parking }}</b></td><td>{{ (ratios.share_arriving_by_vehicle*100)|int }}% come by vehicle, {{ ratios.people_per_vehicle }} per vehicle</td></tr></table></div></div>
+{{ explain(res) }}<a class="btn" href="{{ url_for('manage', entity='events') }}">Back to events</a>{% endblock %}

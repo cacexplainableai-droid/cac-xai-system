@@ -1,0 +1,4 @@
+{% extends "base.html" %}{% block title %}Reports{% endblock %}{% block body %}
+<h1>Reports</h1><p class="sub">Download records as CSV files that open in Excel. Each download is recorded in the audit log.</p>
+<div class="card"><table><tr><th>Report</th><th></th></tr>{% for k,v in reports.items() %}<tr><td>{{ v[0] }}</td><td class="num"><a class="btn small" href="{{ url_for('report_csv', name=k) }}">Download CSV</a></td></tr>{% endfor %}</table></div>
+<div class="note">Tip: to print any page as a report, press Ctrl + P in the browser. The menu is hidden automatically on paper.</div>{% endblock %}

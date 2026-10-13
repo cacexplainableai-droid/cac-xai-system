@@ -1,0 +1,19 @@
+{% extends "base.html" %}{% block title %}Model Governance{% endblock %}{% block body %}
+<h1>Model Governance and Audit</h1><p class="sub">Transparency page: how well the models perform, what they rely on, who used the system and what was done.</p>
+<div class="grid g2"><div class="card"><h2>Attendance model (Random Forest)</h2><table>
+<tr><td>Training records / test records</td><td class="num">{{ am.n_train }} / {{ am.n_test }}</td></tr>
+<tr><td>Mean absolute error</td><td class="num">{{ '%.1f'|format(am.metrics.mae) }} people</td></tr><tr><td>Baseline error (same as last time)</td><td class="num">{{ '%.1f'|format(am.baseline_mae) }} people</td></tr>
+<tr><td>Special events: model vs baseline error</td><td class="num">{{ '%.1f'|format(am.special_mae) }} vs {{ '%.1f'|format(am.special_baseline) }}</td></tr>
+<tr><td>R-squared</td><td class="num">{{ '%.3f'|format(am.metrics.r2) }}</td></tr></table></div>
+<div class="card"><h2>Income model (Gradient Boosting)</h2><table>
+<tr><td>Training / test branch-months</td><td class="num">{{ im.n_train }} / {{ im.n_test }}</td></tr>
+<tr><td>Mean absolute error</td><td class="num">SLE {{ "{:,.0f}".format(im.metrics.mae) }}</td></tr><tr><td>Baseline error (same as last month)</td><td class="num">SLE {{ "{:,.0f}".format(im.baseline_mae) }}</td></tr>
+<tr><td>R-squared</td><td class="num">{{ '%.3f'|format(im.metrics.r2) }}</td></tr></table></div></div>
+<div class="card"><h2>What the attendance model relies on most (overall importance)</h2>{{ imp }}</div>
+<div class="card"><h2>Responsible-AI safeguards</h2><ul class="why"><li>Every prediction shows its reasons (Shapley-value explanation).</li><li>Flags on financial records are for human review only; reviewers record their decision.</li>
+<li>The knowledge assistant answers only from approved documents and names the source.</li><li>Pages are restricted by user role; every login and action is recorded below.</li><li>The sample data is synthetic and contains no real personal information.</li></ul></div>
+<div class="card"><h2>Recent model runs</h2><table><tr><th>When</th><th>Model</th><th class="num">MAE</th><th class="num">Baseline MAE</th><th>Notes</th></tr>
+{% for r in runs %}<tr><td>{{ r.run_on }}</td><td>{{ r.model_name }}</td><td class="num">{{ '%.1f'|format(r.mae) }}</td><td class="num">{{ '%.1f'|format(r.baseline_mae) }}</td><td>{{ r.notes }}</td></tr>{% endfor %}</table></div>
+<div class="grid g2"><div class="card"><h2>Users</h2><table><tr><th>Username</th><th>Name</th><th>Role</th></tr>{% for u in users %}<tr><td>{{ u.username }}</td><td>{{ u.full_name }}</td><td>{{ u.role }}</td></tr>{% endfor %}</table></div>
+<div class="card"><h2>Audit log (latest 15)</h2><table><tr><th>Time</th><th>User</th><th>Action</th></tr>{% for l in log %}<tr><td>{{ l.ts }}</td><td>{{ l.username }}</td><td>{{ l.action }}</td></tr>{% endfor %}</table></div></div>
+{% endblock %}
