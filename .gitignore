@@ -3,3 +3,6 @@ __pycache__/
 *.pyc
 cac_xai.db
 .vscode/
+.env
+.env.*
+!.env.example
